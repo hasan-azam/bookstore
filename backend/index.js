@@ -21,7 +21,7 @@ app.post('/books', async (request, response) => {
             !request.body.title ||
             !request.body.author ||
             !request.body.publishYear
-        ) {
+        ) { //if the request doesn't have all the necessary fields, give this error
             return response.status(400).send({
                 message: 'Send all required fields: title, author, publishYear',
             });
@@ -70,6 +70,45 @@ response.status(500).send({message: error.message});
     }
 });
 
+
+// Route to Update an existing Book
+
+app.put('/books/:id', async (request, response) => {
+    try {
+        if (
+            !request.body.title ||
+            !request.body.author ||
+            !request.body.publishYear
+        )
+        {
+            //if the request doesn't have all the necessary fields, give this error
+            return response.status(400).send({
+                message: 'Send all required fields: title, author, publishYear',
+            });
+        }
+  //Searches for a book with the id specified in the HTTP Request and updates it based on what we put in the body      
+const {id} = request.params;
+
+const result = await Book.findByIdAndUpdate(id, request.body);
+
+//If the book doesn't exist, return an error otherwise give a success message
+
+if (!result) {
+    return response.status(404).json({message: 'Book not found'});
+}
+
+return response.status(200).send({message: 'Book updated successfully'});
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({message: error.message});
+    }
+    
+});
+
+
+
+//connects app to MongoDB and logs which port it's running on
 mongoose
     .connect(MongoDBURL)
     .then(() => {
