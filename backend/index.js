@@ -106,6 +106,26 @@ return response.status(200).send({message: 'Book updated successfully'});
     
 });
 
+//Route for Deleting a book
+app.delete('/books/:id', async(request, response) => {
+
+    try {
+        const {id} = request.params;
+
+        const result = await Book.findByIdAndDelete(id);
+
+        if (!result) {
+            return response.status(404).json({message: 'Book not found'});
+        }
+
+        return response.status(200).send({message: 'Book deleted successfully'});
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({message: error.message});
+    }
+});
+
 
 
 //connects app to MongoDB and logs which port it's running on
