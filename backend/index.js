@@ -13,13 +13,18 @@ app.use(express.json()); // Ensure that the app can parse JSON request bodies
 
 //Middleware for handling CORS Policy
 
-app.use(
-    cors({
-        origin: 'http//localhost:3000',
-        methods: ['GET', 'POST', 'PUT', "DELETE"],
-        allowedHeaders: ['Content-Type'],
-    })
-);
+//Simple cors allowing all origins
+app.use(cors());
+
+
+//This one allows us to set a whitelist of allowed conections
+// app.use(
+//     cors({
+//         origin: 'http//localhost:3000',
+//         methods: ['GET', 'POST', 'PUT', "DELETE"],
+//         allowedHeaders: ['Content-Type'],
+//     })
+// );
 
 app.get('/', (request, response) => {
     console.log(request);
